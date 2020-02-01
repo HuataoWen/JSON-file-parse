@@ -28,11 +28,12 @@
                     var headers = obj.Mainline.Table.Header.Data;
                     var rows = obj.Mainline.Table.Row;
 
+                    // html form
                     var html = '<html><head><title>Car List</title><style>table, td, th {border: 2px inset #ccc;border-spacing: 1px;}</style></head>';
                     html += '<body>';
                     html += '<table>';
                     
-                        // Header row
+                    // Header row
                     html += '<tr>';
                     for (header in headers) {
                         html += '<th><strong>' + headers[header] + '</strong></th>';
