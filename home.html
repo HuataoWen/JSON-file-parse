@@ -28,7 +28,6 @@
                     var headers = obj.Mainline.Table.Header.Data;
                     var rows = obj.Mainline.Table.Row;
 
-                    // html form
                     var html = '<html><head><title>Car List</title><style>table, td, th {border: 2px inset #ccc;border-spacing: 1px;}</style></head>';
                     html += '<body>';
                     html += '<table>';
@@ -81,8 +80,8 @@
                     return html;
                 }
             }
-
-            function result() {
+            
+            function process() {
                 // Obtain user input
                 var inputURL = document.getElementById("url").value;
 
@@ -105,7 +104,7 @@
                         }
                     }
 
-                    //
+                    // Start
                     if (loadJSON(inputURL) == true) {
                         // Parse json file
                         var jsonObj = JSON.parse(jsonDoc);
@@ -134,7 +133,7 @@
         <h3>Enter URL for list of tallest buildings JSON File</h3>
 
         <div class="userInput">
-            <form onsubmit="result()">
+            <form onsubmit="process()">
                 <input type="text" name="url" id="url" required>
                 <br>
                 <br>
