@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+        <style>
+            h3 {
+                padding-top: 5%;
+                text-align: center;
+            }
+            .userInput {
+                text-align: center;
+            }
+            input[type=submit] {
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid;
+                border-radius: 3px;
+                padding: 2px;
+            }
+        </style>
+        <script type="text/javascript">
+            function generateResultForm(obj) {
+                // Number of rows check
+                if(typeof(obj.Mainline.Table.Row) == 'undefined') {
+                    alert("File does not contain manufacturers entries!");
+                    return "";
+                }
+                else {
+                    var headers = obj.Mainline.Table.Header.Data;
+                    var rows = obj.Mainline.Table.Row;
+
+                    var html = '<html><head><title>Car List</title><style>table, td, th {border: 2px inset #ccc;border-spacing: 1px;}</style></head>';
+                    html += '<body>';
+                    html += '<table>';
+                    
+                        // Header row
+                    html += '<tr>';
+                    for (header in headers) {
+                        html += '<th><strong>' + headers[header] + '</strong></th>';
+                    }
+                    html += '</tr>';
+                    
+                    // Data rows
+                    for (key in rows) {
+                        html += '<tr>';
+                        for (header in headers) {
+                            if (header == 0) {
+                                html += '<td>'+rows[key]['Rank']+'</td>';
+                            }
+                            if (header == 1) {
+                                html += '<td>'+rows[key]['Name']+'</td>';
+                            }
+                            if (header == 2) {
+                                html += '<td><ul>';
+                                for (var index in rows[key]['Hubs']['Hub']) {
+                                    if (index == 0) {
+                                        html += '<li><strong>' + rows[key]['Hubs']['Hub'][index] + '</strong></li>';
+                                    }
+                                    else {
+                                        html += '<li>' + rows[key]['Hubs']['Hub'][index] + '</li>';
+                                    }
+                                }
+                                html += '</ul></td>';
+                            }
+                            if (header == 3) {
+                                html += '<td>'+rows[key]['Height']+'</td>';
+                            }
+                            if (header == 4) {
+                                html += '<td><a href='+rows[key]['HomePage']+'>' + rows[key]['HomePage'] + '</a></td>';
+                            }
+                            if (header == 5) {
+                                html += '<td><img style="width: 150px; height: 150px;" src=' + rows[key]['Logo']+'></td>';
+                            }
+                        }
+                        html += '</tr>';
+                    }
+                    html += '</table>';
+                    html += '</body>';
+                    html += '</html>';
+                    
+                    return html;
+                }
+            }
+
+            function result() {
+                // Obtain user input
+                var inputURL = document.getElementById("url").value;
+
+                // Check filename extension
+                if (inputURL.split('.').pop() == "json") {
+                    // Get json file
+                    var jsonDoc;
+                    function loadJSON (url) {
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.open("GET", url, false); //open, send, responseText are
+                        xmlhttp.send(); //properties of XMLHTTPRequest
+                        
+                        if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                            jsonDoc = xmlhttp.responseText;
+                            return true;
+                        }
+                        else {
+                            // Can not find file
+                            return false;
+                        }
+                    }
+
+                    //
+                    if (loadJSON(inputURL) == true) {
+                        // Parse json file
+                        var jsonObj = JSON.parse(jsonDoc);
+
+                        // Generate form
+                        var resultForm = generateResultForm(jsonObj);
+
+                        // Generate new window and show form
+                        var newWindow = window.open("", '_blank', 'location="yes"');
+                        newWindow.document.open();
+                        newWindow.document.write(resultForm);
+                        newWindow.document.close(); // Can not go back to previous page if miss this statement
+                    }
+                    else {
+                        alert("The file (" + inputURL + ") does not exist!");
+                    }
+                }
+                else {
+                    alert("Incorrect filename extension! (" + inputURL + ")");
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <h3>Enter URL for list of tallest buildings JSON File</h3>
+
+        <div class="userInput">
+            <form onsubmit="result()">
+                <input type="text" name="url" id="url" required>
+                <br>
+                <br>
+                <input type="submit" value="Submit Query">
+            </form>
+        </div>
+    </body>
+</html>
