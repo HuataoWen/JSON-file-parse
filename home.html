@@ -21,7 +21,6 @@
             function generateResultForm(obj) {
                 // Number of rows check
                 if(typeof(obj.Mainline.Table.Row) == 'undefined') {
-                    alert("File does not contain manufacturers entries!");
                     return "";
                 }
                 else {
@@ -111,12 +110,16 @@
 
                         // Generate form
                         var resultForm = generateResultForm(jsonObj);
-
-                        // Generate new window and show form
-                        var newWindow = window.open("", '_blank', 'location="yes"');
-                        newWindow.document.open();
-                        newWindow.document.write(resultForm);
-                        newWindow.document.close(); // Can not go back to previous page if miss this statement
+                        if (resultForm == "") {
+                            alert("File does not contain manufacturers entries!");
+                        }
+                        else {
+                            // Generate new window and show form
+                            var newWindow = window.open("", '_blank', 'location="yes"');
+                            newWindow.document.open();
+                            newWindow.document.write(resultForm);
+                            newWindow.document.close(); // Can not go back to previous page if miss this statement
+                        }
                     }
                     else {
                         alert("The file (" + inputURL + ") does not exist!");
@@ -137,7 +140,7 @@
                 <input type="text" name="url" id="url" required>
                 <br>
                 <br>
-                <input type="submit" value="Submit Query">
+                <input type="submit" value="Submit Qufery">
             </form>
         </div>
     </body>
