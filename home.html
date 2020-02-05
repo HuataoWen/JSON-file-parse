@@ -20,7 +20,7 @@
         <script type="text/javascript">
             function generateResultForm(obj) {
                 // Number of rows check
-                if(typeof(obj.Mainline.Table.Row) == 'undefined') {
+                if((typeof(obj.Mainline.Table.Row) == 'undefined') || ((obj.Mainline.Table.Row).length == 0)) {
                     return "";
                 }
                 else {
